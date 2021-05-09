@@ -28,6 +28,22 @@ app.get("/about", (req, res) => {
   res.render("about", { login: null });
 });
 
+app.get("/products/ne", (req, res) => {
+  res.render("products", { login: null, products: null });
+});
+
+app.get("/products/ml", (req, res) => {
+  res.render("products", { login: null, products: null });
+});
+
+app.get("/products/ribw", (req, res) => {
+  res.render("products", { login: null, products: null });
+});
+
+app.get("/orders", (req, res) => {
+  res.render("products", { login: null, products: null });
+});
+
 app.listen(5000, (req, res) => {
   console.log("Server running on port 5000");
 });
