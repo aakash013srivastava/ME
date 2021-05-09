@@ -21,11 +21,11 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", { login: null });
 });
 
 app.get("/about", (req, res) => {
-  res.render("about");
+  res.render("about", { login: null });
 });
 
 app.listen(5000, (req, res) => {
