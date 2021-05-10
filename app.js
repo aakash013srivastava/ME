@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require("express");
+const { type } = require("os");
 const app = express();
 
 app.set("views", "./pages");
@@ -28,16 +29,9 @@ app.get("/about", (req, res) => {
   res.render("about", { login: null });
 });
 
-app.get("/products/ne", (req, res) => {
-  res.render("products", { login: null, products: null });
-});
-
-app.get("/products/ml", (req, res) => {
-  res.render("products", { login: null, products: null });
-});
-
-app.get("/products/ribw", (req, res) => {
-  res.render("products", { login: null, products: null });
+app.get("/products/:firm", (req, res) => {
+  console.log(req.params.firm);
+  res.render("products", { login: null, firm: req.params.firm });
 });
 
 app.get("/orders", (req, res) => {
