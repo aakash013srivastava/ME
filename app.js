@@ -41,16 +41,24 @@ app.use(
 );
 
 app.get("/", (req, res) => {
+
   res.render("home", { login: null });
 });
 
 app.get("/failed", (req, res) => {
-  res.render("login", { message: "Failed to login" });
+  res.render("login", { login: "Failed to login" });
 });
 
 app.get("/good",isLoggedIn, (req, res) => {
-  res.render("login", { message: "Welcome Mr. ${req.user.email}" });
+  console.log(String(req.user.profile));
+  res.render("login", { message: "Welcome Mr. ${req.user.email}",login:req.user.email });
 });
+
+
+
+app.get('/register',(req,res)=>
+    res.render('register',{login:null,message:null}));
+
 
 app.get('/login',
   passport.authenticate('google', { scope: ['profile','email'] }));
@@ -59,12 +67,13 @@ app.get('/google/callback',
   passport.authenticate('google', { failureRedirect: '/failed' }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect('/home');
+    res.redirect('/');
   });
 
 
 app.get("/about", (req, res) => {
-  res.render("about", { login: null });
+  console.log(String(req.user.email));
+  res.render("about", { login: req.user.email });
 });
 
 app.get("/products/:firm", (req, res) => {

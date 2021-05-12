@@ -1,0 +1,34 @@
+<%- include('layout');%> This is Login page
+<form action="/register">
+    <div class="form-group">
+        <label for="email">Email address:</label>
+        <input type="email" class="form-control" id="email" required>
+      </div>
+      <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" id="pwd" required>
+      </div>
+      <div class="form-group">
+        <label for="pwdc">Confirm Password:</label>
+        <input type="password" class="form-control" id="pwdc" required>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+</form>
+<script>
+    const password = document.getElementById("pwd")
+    , confirm_password = document.getElementById("pwdc");
+  
+  function validatePassword(){
+    if(password.value != confirm_password.value) {
+      confirm_password.setCustomValidity("Passwords Don't Match");
+    } else {
+      confirm_password.setCustomValidity('');
+    }
+  }
+  
+  password.onchange = validatePassword;
+  confirm_password.onkeyup = validatePassword;
+</script>
+
+<% if(message) %>
+<%= message %>
