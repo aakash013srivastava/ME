@@ -16,13 +16,7 @@ app.use(cookieSession({
   keys: ['key1', 'key2']
 }));
 
-const isLoggedIn = (req,res,next) => {
-  if(req.user){
-    next();
-  }else{
-    res.sendStatus(401);
-  }
-}
+let login = null;
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,28 +34,17 @@ app.use(
   express.static(path.join(__dirname, "node_modules/jquery/dist"))
 );
 
-app.get("/", (req, res) => {
-
-  res.render("home", { login: null });
+app.get("/",(req, res) => {
+  if(req.user){
+    login = req.user._json.email;
+  }
+  res.render("home", { login:login,message:"Logged In" });
 });
-
-app.get("/failed", (req, res) => {
-  res.render("login", { login: "Failed to login" });
-});
-
-app.get("/good",isLoggedIn, (req, res) => {
-  console.log(String(req.user.profile));
-  res.render("login", { message: "Welcome Mr. ${req.user.email}",login:req.user.email });
-});
-
-
-
-app.get('/register',(req,res)=>
-    res.render('register',{login:null,message:null}));
 
 
 app.get('/login',
-  passport.authenticate('google', { scope: ['profile','email'] }));
+  /*passport.authenticate('google', { scope: ['profile','email'] }));*/
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 app.get('/google/callback', 
   passport.authenticate('google', { failureRedirect: '/failed' }),
@@ -70,26 +53,31 @@ app.get('/google/callback',
     res.redirect('/');
   });
 
+app.get('/logout',(req,res) => {
+    req.session = null;
+    req.logout();
+    login = null;
+    res.render("home",{login:login});
+  })
+  
 
 app.get("/about", (req, res) => {
   console.log(String(req.user.email));
-  res.render("about", { login: req.user.email });
+  res.render("about", { login: login });
 });
 
 app.get("/products/:firm", (req, res) => {
-  console.log(req.params.firm);
-  res.render("products", { login: null, firm: req.params.firm });
+  
+  res.render("products", { login: login, firm: req.params.firm });
 });
 
 app.get("/orders", (req, res) => {
-  res.render("products", { login: null, products: null });
+  res.render("orders", { login: login, products: null });
 });
 
-app.get('/logout',(req,res) => {
-  req.session = null;
-  req.logout();
-  res.redirect("/");
-})
+app.get("/*",(req,res)=>{
+  res.status(404).render("404",{login:login});
+});
 
 app.listen(5000, (req, res) => {
   console.log("Server running on port 5000");
