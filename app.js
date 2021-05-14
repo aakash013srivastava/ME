@@ -6,6 +6,8 @@ const passport = require("passport");
 require('./passport-setup'); 
 const cookieSession = require("cookie-session");
 
+const fs = require("fs");
+
 app.set("views", "./pages");
 app.set("view engine", "ejs");
 app.use(express.static("./public"));
@@ -75,6 +77,9 @@ app.get("/products/:firm",isLoggedIn, (req, res) => {
 });
 
 app.get("/orders",isLoggedIn, (req, res) => {
+  fs.readFile('text.txt',{encoding:'UTF-8'},(err,data) => {
+    console.log(data);
+  })
   res.render("orders", { login: login, products: null });
 });
 
