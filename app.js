@@ -17,6 +17,12 @@ app.use(cookieSession({
 }));
 
 let login = null;
+const isLoggedIn = (req,res,next) =>{
+  if(req.user){
+    login = req.user.emails[0].value;
+    next();
+  }
+}
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -34,10 +40,7 @@ app.use(
   express.static(path.join(__dirname, "node_modules/jquery/dist"))
 );
 
-app.get("/",(req, res) => {
-  if(req.user){
-    login = req.user._json.email;
-  }
+app.get("/",isLoggedIn,(req, res) => {
   res.render("home", { login:login,message:"Logged In" });
 });
 
@@ -61,21 +64,21 @@ app.get('/logout',(req,res) => {
   })
   
 
-app.get("/about", (req, res) => {
+app.get("/about",isLoggedIn, (req, res) => {
   console.log(String(req.user.email));
   res.render("about", { login: login });
 });
 
-app.get("/products/:firm", (req, res) => {
+app.get("/products/:firm",isLoggedIn, (req, res) => {
   
   res.render("products", { login: login, firm: req.params.firm });
 });
 
-app.get("/orders", (req, res) => {
+app.get("/orders",isLoggedIn, (req, res) => {
   res.render("orders", { login: login, products: null });
 });
 
-app.get("/*",(req,res)=>{
+app.get("/*",isLoggedIn,(req,res)=>{
   res.status(404).render("404",{login:login});
 });
 
