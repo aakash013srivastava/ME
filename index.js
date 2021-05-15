@@ -1,10 +1,13 @@
 const { readFile } = require("fs").promises;
+const orders = require("./pages/orders.json");
+console.log(orders);
 
-console.log("Initial");
+// const getText =  async () => {
+//   const text = await  readFile("./pages/orders.txt","utf8");
+//   return text;
+// };
+// getText().then(t=>console.log(t[0]));
 
-const getText = async () => {
-  const text = await readFile("./text.txt", "utf-8");
-  console.log(text);
-};
+//console.log(text);
 
-console.log("Final");
+

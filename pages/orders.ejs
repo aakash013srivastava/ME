@@ -1,12 +1,31 @@
-<%- include('layout');%> This is Orders page
+<% include('layout');%> This is Orders page
 <div class="container">
     <ul>
         <%if(orders.length>0){%>
-        <%for(i in orders){%>
-        <li>
-            <%=orders[i]%>
-        </li>
-        <%} }%>
+        <table>
+            <%var row =orders.split(",")%>
+        <tr>
+            <th>ID</th>
+            <th>Itemname</th>
+            <th>Firm</th>
+            <th>Size</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Bill</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+        </tr>
+            <tr>
+            <td>
+                <%=row[0]%>
+            </td>
+        </tr>    
+        </table>
+        <%}else{%>
+        
+        
+        <%}%>
     </ul>
 </div>
 

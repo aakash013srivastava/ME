@@ -6,6 +6,7 @@ const passport = require("passport");
 require('./passport-setup'); 
 const cookieSession = require("cookie-session");
 
+const fs = require("fs");
 const fsPromise = require("fs").promises;
 
 app.set("views", "./pages");
@@ -82,16 +83,15 @@ app.get("/products/:firm",isLoggedIn, (req, res) => {
 
 app.get("/orders",isLoggedIn, async (req, res) => {
   
-  let orders = await fsPromise.readFile('./pages/orders.json',{encoding:'UTF8'});
-  console.log(orders.length);
-  
-  res.render("orders", { login: login,loginType:loginType, orders: orders })
-  
+    let orders =  await fsPromise.readFile('./pages/orders.txt',{encoding:'UTF-8'});
+    res.render("orders", { login: login,loginType:loginType, orders: orders });
+    
+    
 });
 
 app.get("/admin",isLoggedIn, async (req, res) => {
-  let orders = await fsPromise.readFile('./pages/orders.json',{encoding:'UTF-8'});
-  res.render("admin", { login: login,loginType:loginType, orders: orders })
+  let orders = await fsPromise.readFile('./pages/orders.txt',{encoding:'UTF-8'});
+  res.render("admin", { login: login,loginType:loginType, orders: orders });
   
 });
 
