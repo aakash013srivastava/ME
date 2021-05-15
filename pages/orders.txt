@@ -1,2 +1,3 @@
-1,LSBELT,ML,12,100,10
-1,Sling,NE,10,1000,100
+id,itemname,firm,size,price,quantity,bill,email,phone,address
+1,LSBELT,ML,12,100,10,1000,aakash013srivastava@gmail.com,12345,abcd
+1,Sling,NE,10,1000,100,100000,aakash013srivastava@gmail.com,12345,abcd

@@ -2,25 +2,61 @@
 <div class="container">
     <ul>
         <%if(orders.length>0){%>
-        <table>
-            <%var row =orders.split(",")%>
-        <tr>
-            <th>ID</th>
-            <th>Itemname</th>
-            <th>Firm</th>
-            <th>Size</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Bill</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-        </tr>
+        <table class="table-dark">
+            <thead>
             <tr>
-            <td>
-                <%=row[0]%>
-            </td>
-        </tr>    
+                <th>ID</th>
+                <th>Itemname</th>
+                <th>Firm</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Bill</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let x=0;x<orders.length;x++){%>
+            <%let row =orders[x].split(",")%>
+                
+            <%if(row[7]==userDetails[2]){%>
+            <tr>
+                <td>
+                    <%=row[0]%>
+                </td>
+                <td>
+                    <%=row[1]%>
+                </td>
+                <td>
+                    <%=row[2]%>
+                </td>
+                <td>
+                    <%=row[3]%>
+                </td>
+                <td>
+                    <%=row[4]%>
+                </td>
+                <td>
+                    <%=row[5]%>
+                </td>
+                <td>
+                    <%=row[6]%>
+                </td>
+                <td>
+                    <%=userDetails[2]%>
+                </td>
+                <td>
+                    <%=userDetails[3]%>
+                </td>
+                <td>
+                    <%=userDetails[4]%>
+                </td>
+            </tr>    
+            <%}%>
+            <%}%>
+        </tbody>
         </table>
         <%}else{%>
         

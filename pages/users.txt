@@ -1,0 +1,2 @@
+id,type,email,phone,address
+1,admin,aakash013srivastava@gmail.com,12345,abcd

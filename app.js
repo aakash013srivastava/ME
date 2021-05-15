@@ -27,8 +27,8 @@ const isLoggedIn = (req,res,next) =>{
     if(login=="aakash013srivastava@gmail.com"){
      loginType = "admin";
     }
-    next();
   }
+  next();
 }
 
 app.use(passport.initialize());
@@ -48,7 +48,7 @@ app.use(
 );
 
 app.get("/",isLoggedIn,(req, res) => {
-  res.render("home", { login:login,loginType:loginType,message:"Logged In" });
+  res.render("home", { login:login,loginType:loginType});
 });
 
 
@@ -82,9 +82,19 @@ app.get("/products/:firm",isLoggedIn, (req, res) => {
 });
 
 app.get("/orders",isLoggedIn, async (req, res) => {
-  
+  //check if current login user is registered  
+  let userDetails = null;
     let orders =  await fsPromise.readFile('./pages/orders.txt',{encoding:'UTF-8'});
-    res.render("orders", { login: login,loginType:loginType, orders: orders });
+    let users =  await fsPromise.readFile('./pages/users.txt',{encoding:'UTF-8'});
+    let rows = users.split("\n");
+    for(let index in rows){
+      let row = rows[index].split(",");
+      if(login==row[2]){
+        userDetails = row; // user is registered in users db,details sent to orders ejs
+      }
+    }
+    res.render("orders", { login: login,loginType:loginType,
+                              userDetails:userDetails, orders: orders });
     
     
 });
