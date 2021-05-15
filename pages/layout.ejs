@@ -54,6 +54,11 @@
             <a class="nav-link" href="/orders">Orders</a>
           </li>
           <% } %>
+          <% if(loginType=="admin") { %>
+            <li class="nav-item active">
+              <a class="nav-link" href="/admin">Admin</a>
+            </li>
+            <% } %>
           <li class="nav-item active">
             <a class="nav-link" href="/about">About</a>
           </li>

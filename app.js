@@ -6,7 +6,7 @@ const passport = require("passport");
 require('./passport-setup'); 
 const cookieSession = require("cookie-session");
 
-const fs = require("fs");
+const fsPromise = require("fs").promises;
 
 app.set("views", "./pages");
 app.set("view engine", "ejs");
@@ -19,9 +19,13 @@ app.use(cookieSession({
 }));
 
 let login = null;
+let loginType = null;
 const isLoggedIn = (req,res,next) =>{
   if(req.user){
     login = req.user.emails[0].value;
+    if(login=="aakash013srivastava@gmail.com"){
+     loginType = "admin";
+    }
     next();
   }
 }
@@ -43,7 +47,7 @@ app.use(
 );
 
 app.get("/",isLoggedIn,(req, res) => {
-  res.render("home", { login:login,message:"Logged In" });
+  res.render("home", { login:login,loginType:loginType,message:"Logged In" });
 });
 
 
@@ -62,29 +66,38 @@ app.get('/logout',(req,res) => {
     req.session = null;
     req.logout();
     login = null;
-    res.render("home",{login:login});
-  })
+    loginType = null;
+    res.render("home",{login:login,loginType:loginType});
+  });
   
 
 app.get("/about",isLoggedIn, (req, res) => {
-  console.log(String(req.user.email));
-  res.render("about", { login: login });
+  res.render("about", { login: login,loginType:loginType });
 });
 
 app.get("/products/:firm",isLoggedIn, (req, res) => {
   
-  res.render("products", { login: login, firm: req.params.firm });
+  res.render("products", { login: login,loginType:loginType, firm: req.params.firm });
 });
 
-app.get("/orders",isLoggedIn, (req, res) => {
-  fs.readFile('text.txt',{encoding:'UTF-8'},(err,data) => {
-    console.log(data);
-  })
-  res.render("orders", { login: login, products: null });
+app.get("/orders",isLoggedIn, async (req, res) => {
+  
+  let orders = await fsPromise.readFile('./pages/orders.json',{encoding:'UTF8'});
+  console.log(orders.length);
+  
+  res.render("orders", { login: login,loginType:loginType, orders: orders })
+  
 });
+
+app.get("/admin",isLoggedIn, async (req, res) => {
+  let orders = await fsPromise.readFile('./pages/orders.json',{encoding:'UTF-8'});
+  res.render("admin", { login: login,loginType:loginType, orders: orders })
+  
+});
+
 
 app.get("/*",isLoggedIn,(req,res)=>{
-  res.status(404).render("404",{login:login});
+  res.status(404).render("404",{login:login,loginType:loginType});
 });
 
 app.listen(5000, (req, res) => {

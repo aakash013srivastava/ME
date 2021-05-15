@@ -1,1 +1,12 @@
 <%- include('layout');%> This is Orders page
+<div class="container">
+    <ul>
+        <%if(orders.length>0){%>
+        <%for(i in orders){%>
+        <li>
+            <%=orders[i]%>
+        </li>
+        <%} }%>
+    </ul>
+</div>
+
