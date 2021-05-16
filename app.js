@@ -91,10 +91,23 @@ app.get("/orders",isLoggedIn, async (req, res) => {
       let row = rows[index].split(",");
       if(login==row[2]){
         userDetails = row; // user is registered in users db,details sent to orders ejs
+        console.log(userDetails);
       }
     }
+    let OrderRows = orders.split("\n");
+    //console.log(OrderRows);
+    let eligibleOrders = [];
+    for(let index in OrderRows){
+      let row = OrderRows[index].split(",");
+      //console.log(row);
+        if(row[8]==login){
+          eligibleOrders[eligibleOrders.length] = OrderRows[index];
+        }
+    }
+    //console.log(eligibleOrders);
+    
     res.render("orders", { login: login,loginType:loginType,
-                              userDetails:userDetails, orders: orders });
+                              userDetails:userDetails, orders: eligibleOrders });
     
     
 });

@@ -1,8 +1,6 @@
-<% include('layout');%> This is Orders page
+<%- include('layout');%>Orders
 <div class="container">
-    <ul>
-        <%if(orders.length>0){%>
-        <table class="table-dark">
+      <table class="table-bordered table-striped">
             <thead>
             <tr>
                 <th>ID</th>
@@ -12,16 +10,15 @@
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Bill</th>
+                <th>Date</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Address</th>
             </tr>
         </thead>
         <tbody>
-            <% for(let x=0;x<orders.length;x++){%>
+            <% for(let x in orders){%>
             <%let row =orders[x].split(",")%>
-                
-            <%if(row[7]==userDetails[2]){%>
             <tr>
                 <td>
                     <%=row[0]%>
@@ -45,6 +42,9 @@
                     <%=row[6]%>
                 </td>
                 <td>
+                    <%=row[7]%>
+                </td>
+                <td>
                     <%=userDetails[2]%>
                 </td>
                 <td>
@@ -53,15 +53,34 @@
                 <td>
                     <%=userDetails[4]%>
                 </td>
+
             </tr>    
-            <%}%>
             <%}%>
         </tbody>
         </table>
-        <%}else{%>
-        
-        
-        <%}%>
-    </ul>
 </div>
+<button type="button" class="btn btn-primary" id="create" onclick="createOrder()">
+    Create New Order
+</button>
+<form action="/newOrder" method="POST">
+    <select class="form-control form-control-sm">
+        <option>Small select</option>
+      </select>
+      <select class="form-control form-control-sm">
+        <option>Small select</option>
+      </select>
+      Price
+
+      Quantity
+</form>
+
+<script>
+    function createOrder(){
+
+    }
+</script>
+
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
