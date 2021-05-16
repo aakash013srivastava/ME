@@ -1,6 +1,7 @@
-<%- include('layout');%>Orders
+<%- include('layout');%>
+<h2>Orders</h2>
 <div class="container">
-    <%if(userDetails){%>  
+    <%if(userDetails){%> <!-- Check user login--> 
     <table class="table-bordered table-striped">
             <thead>
             <tr>
@@ -55,7 +56,8 @@
                     <%=userDetails[4]%>
                 </td>
 
-            </tr>    
+            </tr> 
+            <%}%>   
         </tbody>
     </table>
     <button type="button" class="btn btn-primary" id="create" onclick="createOrder()">
@@ -72,9 +74,8 @@
     
           Quantity
     </form>
-
-        <%}%>
-        <%}else{%><!-- Scenario of unregistered user-->
+              
+    <%}else{%><!-- if closed,else scenario of unregistered user-->
         <h2>Register First</h2>
         <form action="/newUser" method="POST">
             <div class="form-group">

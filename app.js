@@ -48,7 +48,7 @@ app.use(
 );
 
 app.get("/",isLoggedIn,(req, res) => {
-  res.render("home", { login:login,loginType:loginType});
+  res.render("home", { login:login,loginType:loginType,message:null});
 });
 
 
@@ -68,7 +68,7 @@ app.get('/logout',(req,res) => {
     req.logout();
     login = null;
     loginType = null;
-    res.render("home",{login:login,loginType:loginType});
+    res.render("home",{login:login,loginType:loginType,message:null});
   });
   
 
@@ -89,9 +89,10 @@ app.get("/orders",isLoggedIn, async (req, res) => {
     let rows = users.split("\n");
     for(let index in rows){
       let row = rows[index].split(",");
+      console.log(row[2]==login);
       if(login==row[2]){
         userDetails = row; // user is registered in users db,details sent to orders ejs
-        console.log(userDetails);
+      //  console.log(userDetails);
       }
     }
     let OrderRows = orders.split("\n");
@@ -116,21 +117,21 @@ app.get("/orders",isLoggedIn, async (req, res) => {
 
 app.post("/newUser",isLoggedIn, async (req, res) => {
   let users = await fsPromise.readFile('./pages/users.txt',{encoding:'UTF-8'});
-  console.log(users.split("\n"));
-  let userRows = users.split("\n");
+  //console.log(users.split("\n"));
+  let userRows = users.split("\n"); //  1 user detail each in every array index
   let newUserId  = null;
   for(let index in userRows){
       if(index==(userRows.length-1)){
         let row = userRows[index].split(","); // Retrieve Last registered user's id 
-        newUserId = Number(row[0])+1;
+        newUserId = Number(row[0])+1;  //Make current id one more than last user id
         //console.log(row[0]);
       }
     }
   let phone = req.body.phone;
   let address = req.body.address;
-  let writeUsers = await fsPromise.writeFile('./pages/users.txt',
-                      ("\n,${newUserId},customer,${phone},${address}"),{encoding:'UTF-8'});
-  res.render("home", { login: login,loginType:loginType });
+  let writeUsers = await fsPromise.appendFile('./pages/users.txt',
+                      ("\n"+newUserId+",customer,"+login+","+phone+","+address),{encoding:'UTF-8'});
+  res.render("home", { login: login,loginType:loginType,message:"User Registered !!!" });
   
 });
 
