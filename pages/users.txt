@@ -1,2 +1,2 @@
-id,type,email,phone,address,firm
-1,admin,aakash013srivastava@gmail.com,12345,abcd,ml
+id,type,email,phone,address
+1,admin,aakash013srivastava@gmail.com,12345,abcd

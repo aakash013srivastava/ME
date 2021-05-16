@@ -100,17 +100,41 @@ app.get("/orders",isLoggedIn, async (req, res) => {
     for(let index in OrderRows){
       let row = OrderRows[index].split(",");
       //console.log(row);
-        if(row[8]==login){
+        if(row[8]==login && loginType!="admin"){
+          eligibleOrders[eligibleOrders.length] = OrderRows[index];
+        }else if(loginType=="admin"){
           eligibleOrders[eligibleOrders.length] = OrderRows[index];
         }
     }
     //console.log(eligibleOrders);
-    
+
     res.render("orders", { login: login,loginType:loginType,
                               userDetails:userDetails, orders: eligibleOrders });
     
     
 });
+
+app.post("/newUser",isLoggedIn, async (req, res) => {
+  let users = await fsPromise.readFile('./pages/users.txt',{encoding:'UTF-8'});
+  console.log(users.split("\n"));
+  let userRows = users.split("\n");
+  let newUserId  = null;
+  for(let index in userRows){
+      if(index==(userRows.length-1)){
+        let row = userRows[index].split(","); // Retrieve Last registered user's id 
+        newUserId = Number(row[0])+1;
+        //console.log(row[0]);
+      }
+    }
+  let phone = req.body.phone;
+  let address = req.body.address;
+  let writeUsers = await fsPromise.writeFile('./pages/users.txt',
+                      ("\n,${newUserId},customer,${phone},${address}"),{encoding:'UTF-8'});
+  res.render("home", { login: login,loginType:loginType });
+  
+});
+
+
 
 app.get("/admin",isLoggedIn, async (req, res) => {
   let orders = await fsPromise.readFile('./pages/orders.txt',{encoding:'UTF-8'});
