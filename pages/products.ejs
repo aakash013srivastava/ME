@@ -3,7 +3,7 @@
 
 <div class="container">
     <table class="table-bordered table-striped">
-            <thead>
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Itemname</th>
@@ -14,8 +14,10 @@
             </tr>
         </thead>
         <tbody>
-            <% for(let x in products){%>
-            <%let row =products[x].split(",")%>
+            <%if(products){%>
+            <%productRows= (products.split("\n")).slice(1);%>
+            <% for(let x in productRows){%>
+            <%let row =productRows[x].split(",")%>
             <tr>
                 <td>
                     <%=row[0]%>
@@ -37,7 +39,8 @@
                 </td>
 
             </tr> 
-            <%}%>   
+            <%}%>   <!-- End of for-->
+            <%}%>   <!-- End of if-->
         </tbody>
     </table>
 </div>

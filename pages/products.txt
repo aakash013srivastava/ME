@@ -2,4 +2,5 @@ id,itemname,firm,size,price,quantity
 1,sling,ml,12,10,1000
 2,LSBELT,ne,10,1000,20
 3,sling,ne,12,100,100
-4,knee,ml,12,100,100
+4,sling,ribw,12,12,10000
+5,hat,ribw,1,100,2132

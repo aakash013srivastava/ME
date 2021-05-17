@@ -146,20 +146,15 @@ app.get("/admin",isLoggedIn, async (req, res) => {
 
 app.get("/products/:firm",isLoggedIn, async(req, res) => {
   let products = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
-
-  let productRows = orders.split("\n");
-    //console.log(OrderRows);
+    let productRows = products.split("\n");
     let eligibleProducts = [];
     for(let index in productRows){
       let row = productRows[index].split(",");
       //console.log(row);
         if(row[2]==req.params.firm){
           eligibleProducts[eligibleProducts.length] = productRows[index];
-          console.log(eligibleProducts);
         }
     }
-
-
   res.render("products", { login: login,loginType:loginType, products:eligibleProducts });
 });
 
@@ -172,15 +167,13 @@ app.post("/editProduct",isLoggedIn, async (req, res) => {
   let newProductSpecs = null;
   for(let index in productRows){
     let row =  productRows[index].split(","); // Array of one specific product details
-    if(row[1]==req.body.itemname && row[2]==req.body.firm){ // check if product+firm exists in db
-      //console.log(row);
+    if(row[1]==(req.body.itemname).toLowerCase() && row[2]==req.body.firm && row[3]==req.body.size){ // check if product+firm exists in db
       productExists =true;// check if product line exists,to update row
       newProductSpecs =products.replace(row,(row[0]+","+(req.body.itemname).toLowerCase()+","+req.body.firm+","+req.body.size+","
       +req.body.price+","+req.body.quantity));
       let writeProduct = await fsPromise.writeFile('./pages/products.txt',newProductSpecs,{encoding:'UTF-8'});    
       }else{
         lastProductId = productRows.length-1;
-        //console.log(lastProductId);
       }
     }
     if(!productExists){// product line doesnt exist,append row at the end
