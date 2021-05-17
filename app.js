@@ -8,6 +8,7 @@ const cookieSession = require("cookie-session");
 
 const fs = require("fs");
 const fsPromise = require("fs").promises;
+const { setUncaughtExceptionCaptureCallback } = require("process");
 
 app.set("views", "./pages");
 app.set("view engine", "ejs");
@@ -142,6 +143,54 @@ app.get("/admin",isLoggedIn, async (req, res) => {
   res.render("admin", { login: login,loginType:loginType, orders: orders });
   
 });
+
+app.get("/products/:firm",isLoggedIn, async(req, res) => {
+  let products = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
+
+  let productRows = orders.split("\n");
+    //console.log(OrderRows);
+    let eligibleProducts = [];
+    for(let index in productRows){
+      let row = productRows[index].split(",");
+      //console.log(row);
+        if(row[2]==req.params.firm){
+          eligibleProducts[eligibleProducts.length] = productRows[index];
+          console.log(req.params.firm);
+        }
+    }
+
+
+  res.render("products", { login: login,loginType:loginType, products:eligibleProducts });
+});
+
+app.post("/editProduct",isLoggedIn, async (req, res) => {
+  let products = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
+  //console.log(users.split("\n"));
+  let productRows = products.split("\n"); //  1 product detail each in every array index
+  let productExists  = false;
+  let insertRowIndex = null;
+  let lastProductId = null;
+  for(let index in productRows){
+    let row =  productRows[index].split(",");
+    if(row[1]==req.body.itemname && row[2]==req.body.firm){
+      productExists =true;
+      row[3]=req.body.size;
+      row[4]=req.body.price;
+      row[5]=req.body.quantity;
+      }else{
+        lastProductId = productRows.length-1;
+        //console.log(lastProductId);
+      }
+      
+    }
+    let writeProduct = await fsPromise.appendFile('./pages/products.txt',
+      ("\n"+(lastProductId+1)+","+req.body.itemname+","+req.body.firm+","+req.body.size+","
+      +req.body.price+","+req.body.quantity),{encoding:'UTF-8'});    
+
+  res.render("products", { login: login,loginType:loginType,message:"User Registered !!!" });
+  
+});
+
 
 
 app.get("/*",isLoggedIn,(req,res)=>{

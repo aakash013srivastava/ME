@@ -1,17 +1,53 @@
 <%- include('layout');%> Welcome Admin 
 
 <h2>
-    Choose Action
+  Edit Product
 </h2>
+<!-- Choose between admin options
 <div class="form-check">
-    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-    <label class="form-check-label" for="flexRadioDefault1">
-      Add Product
+    <input class="form-check-input" type="radio" name="editProducts" id="editProducts">
+    <label class="form-check-label" for="editProducts">
+      
     </label>
   </div>
   <div class="form-check">
-    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-    <label class="form-check-label" for="flexRadioDefault2">
-      Delete Product
+    <input class="form-check-input" type="radio" name="editUsers" id="editUsers">
+    <label class="form-check-label" for="editUsers">
+      Edit Orders
     </label>
+</div>
+-->
+<form action="/editProduct" method="POST" name="editProduct" id="editProduct">
+  <div class="form-group">
+      <label for="itemname">Itemname</label>
+      <input type="text" name="itemname"  class="form-control" id="itemname" required/>
   </div>
+
+  <select class="form-select" aria-label="Select Firm" name="firm">
+    <option selected>Select Firm</option>
+    <option value="ne">NE</option>
+    <option value="ml">ML</option>
+    <option value="ribw">RIBW</option>
+  </select>
+
+  <div class="form-group">
+    <label for="size">Size</label>
+    <input type="text" name="size"  class="form-control" id="size" required/>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input type="text" name="price"  class="form-control" id="price" required/>
+  </div>
+
+  <div class="form-group">
+    <label for="quantity">Quantity</label>
+    <input type="text" name="quantity"  class="form-control" id="quantity" required/>
+  </div>
+
+  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+</form>
+
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.min.js"></script>

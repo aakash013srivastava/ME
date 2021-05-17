@@ -1,1 +1,43 @@
-<%- include('layout');%> This is Products page
+<%- include('layout');%> Our Products
+
+
+<div class="container">
+    <table class="table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Itemname</th>
+                <th>Firm</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let x in products){%>
+            <%let row =products[x].split(",")%>
+            <tr>
+                <td>
+                    <%=row[0]%>
+                </td>
+                <td>
+                    <%=row[1]%>
+                </td>
+                <td>
+                    <%=row[2]%>
+                </td>
+                <td>
+                    <%=row[3]%>
+                </td>
+                <td>
+                    <%=row[4]%>
+                </td>
+                <td>
+                    <%=row[5]%>
+                </td>
+
+            </tr> 
+            <%}%>   
+        </tbody>
+    </table>
+</div>

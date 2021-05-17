@@ -1,3 +1,4 @@
-id,itemname,firm,size,price
-1,sling,ML,12,100
-1,LSBELT,ne,10,1000
+id,itemname,firm,size,price,quantity
+1,sling,ML,12,100,10
+2,LSBELT,ne,10,1000,20
+3,sling,ne,12,100,100
