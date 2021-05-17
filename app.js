@@ -155,7 +155,7 @@ app.get("/products/:firm",isLoggedIn, async(req, res) => {
       //console.log(row);
         if(row[2]==req.params.firm){
           eligibleProducts[eligibleProducts.length] = productRows[index];
-          console.log(req.params.firm);
+          console.log(eligibleProducts);
         }
     }
 
@@ -168,26 +168,28 @@ app.post("/editProduct",isLoggedIn, async (req, res) => {
   //console.log(users.split("\n"));
   let productRows = products.split("\n"); //  1 product detail each in every array index
   let productExists  = false;
-  let insertRowIndex = null;
   let lastProductId = null;
+  let newProductSpecs = null;
   for(let index in productRows){
-    let row =  productRows[index].split(",");
-    if(row[1]==req.body.itemname && row[2]==req.body.firm){
-      productExists =true;
-      row[3]=req.body.size;
-      row[4]=req.body.price;
-      row[5]=req.body.quantity;
+    let row =  productRows[index].split(","); // Array of one specific product details
+    if(row[1]==req.body.itemname && row[2]==req.body.firm){ // check if product+firm exists in db
+      //console.log(row);
+      productExists =true;// check if product line exists,to update row
+      newProductSpecs =products.replace(row,(row[0]+","+(req.body.itemname).toLowerCase()+","+req.body.firm+","+req.body.size+","
+      +req.body.price+","+req.body.quantity));
+      let writeProduct = await fsPromise.writeFile('./pages/products.txt',newProductSpecs,{encoding:'UTF-8'});    
       }else{
         lastProductId = productRows.length-1;
         //console.log(lastProductId);
       }
-      
     }
-    let writeProduct = await fsPromise.appendFile('./pages/products.txt',
-      ("\n"+(lastProductId+1)+","+req.body.itemname+","+req.body.firm+","+req.body.size+","
+    if(!productExists){// product line doesnt exist,append row at the end
+      let writeProduct = await fsPromise.appendFile('./pages/products.txt',
+      ("\n"+(lastProductId+1)+","+(req.body.itemname).toLowerCase()+","+req.body.firm+","+req.body.size+","
       +req.body.price+","+req.body.quantity),{encoding:'UTF-8'});    
-
-  res.render("products", { login: login,loginType:loginType,message:"User Registered !!!" });
+    }
+    let newProducts = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
+  res.render("products", { login: login,loginType:loginType,products:newProducts });
   
 });
 
