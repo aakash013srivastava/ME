@@ -146,12 +146,17 @@ app.post("/newOrder",isLoggedIn,async(req,res)=>{
       }
     }
     let newItemBill = newItemPrice*newItemQuantity;
-
+    //Get order date
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+    let orderDate = dd + '/' + mm + '/' + yyyy;
     // Writing current order to orders database
     let writeOrders = fsPromise.appendFile("./pages/orders.txt",
     ("\n"+currentOrderId+","+newItemName+","+newItemFirm+","+newItemSize+","
-    +newItemPrice+","+newItemQuantity+","+newItemBill+","+Date.now.toString+","+userEmail+","+userPhone+","+userAddress),
-    {encoding:'UTF-8'})
+    +newItemPrice+","+newItemQuantity+","+newItemBill+","+orderDate+","+userEmail+","+userPhone+","+userAddress),
+    {encoding:'UTF-8'});
   res.redirect("/orders");
 });
 
