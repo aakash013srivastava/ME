@@ -60,21 +60,47 @@
             <%}%>   
         </tbody>
     </table>
-    <button type="button" class="btn btn-primary" id="create" onclick="createOrder()">
-        Create New Order
-    </button>
-    <form action="/newOrder" method="POST" id="newOrderForm">
-        <select class="form-control form-control-sm">
-            <option>Small select</option>
-          </select>
-          <select class="form-control form-control-sm">
-            <option>Small select</option>
-          </select>
-          Price
+</div>
+<button type="button" class="btn btn-primary mb-3" id="create" onclick="createOrder()">
+    Create Order
+</button>
     
-          Quantity
+    <form action="/newOrder" method="POST" id="newOrderForm">
+    
+        <div class="form-group">
+            <!--Populate from DB Item names-->
+            <label for="selectItemName">Select Item Name</label>
+            <select class="form-control" name="selectItemName" id="selectItemName" required>
+                <option selected value="">Select Item Name</option>
+                <option value="sling">Sling</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+          <select class="form-select" aria-label="Select Firm" name="newItemfirm" required>
+            <option selected value="">Select Firm</option>
+            <option value="ne">NE</option>
+            <option value="ml">ML</option>
+            <option value="ribw">RIBW</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+            <!--Populate from DB Item sizes-->
+            <label for="selectItemSize">Select Item Size</label>
+            <select class="form-control" id="selectItemSize" name="selectItemSize" required>
+                <option selected value="">Select Size</option>
+                <option value="12">12</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="text" name="newItemQuantity"  class="form-control" id="newItemQuantity" required/>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Submit</button>
     </form>
-              
+ <div>
     <%}else{%><!-- if closed,else scenario of unregistered user-->
         <h2>Register First</h2>
         <form action="/newUser" method="POST">
@@ -93,7 +119,13 @@
 
 <script>
     function createOrder(){
-
+        let newFormButton = document.getElementById("newOrderForm");
+        if(newFormButton.style.display=="none")
+        {
+            newFormButton.style.display=="block";
+        }else{
+            newFormButton.style.display=="none";
+        }
     }
 </script>
 

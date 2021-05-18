@@ -5,7 +5,7 @@ const app = express();
 const passport = require("passport");
 require('./passport-setup'); 
 const cookieSession = require("cookie-session");
-
+//const multer = require('multer');
 const fs = require("fs");
 const fsPromise = require("fs").promises;
 const { setUncaughtExceptionCaptureCallback } = require("process");
@@ -77,10 +77,6 @@ app.get("/about",isLoggedIn, (req, res) => {
   res.render("about", { login: login,loginType:loginType });
 });
 
-app.get("/products/:firm",isLoggedIn, (req, res) => {
-  
-  res.render("products", { login: login,loginType:loginType, firm: req.params.firm });
-});
 
 app.get("/orders",isLoggedIn, async (req, res) => {
   //check if current login user is registered  
@@ -90,7 +86,7 @@ app.get("/orders",isLoggedIn, async (req, res) => {
     let rows = users.split("\n");
     for(let index in rows){
       let row = rows[index].split(",");
-      console.log(row[2]==login);
+      //console.log(row[2]==login);
       if(login==row[2]){
         userDetails = row; // user is registered in users db,details sent to orders ejs
       //  console.log(userDetails);
@@ -112,8 +108,51 @@ app.get("/orders",isLoggedIn, async (req, res) => {
 
     res.render("orders", { login: login,loginType:loginType,
                               userDetails:userDetails, orders: eligibleOrders });
-    
-    
+});
+
+app.post("/newOrder",isLoggedIn,async(req,res)=>{
+  let orders = await fsPromise.readFile('./pages/orders.txt',{encoding:'UTF-8'});
+  let newItemName = req.body.selectItemName;
+  let newItemFirm = req.body.newItemfirm;
+  let newItemSize = req.body.selectItemSize;
+  let newItemQuantity = req.body.newItemQuantity;
+  // Fetching last order id
+  let orderRows = orders.split("\n");
+  let lastOrderRow =orderRows[orderRows.length-1];
+  let lastOrderId = lastOrderRow.split(",")[0];
+  let currentOrderId = Number(lastOrderId) + 1;
+  // Fetching user details for current order
+  let users =  await fsPromise.readFile('./pages/users.txt',{encoding:'UTF-8'});
+  let userDetails = null;
+    let rows = users.split("\n");
+    for(let index in rows){
+      let row = rows[index].split(",");
+      if(login==row[2]){
+        userDetails = row; // user is registered in users db,details sent to orders ejs
+        //console.log(userDetails);
+      }
+    }
+    let userEmail= userDetails[2];
+    let userPhone= userDetails[3];
+    let userAddress= userDetails[4];
+    // fetching product prices for order and billing
+    let products =  await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
+    let productRows = products.split("\n");
+    let newItemPrice = null;
+    for(let index in productRows){
+      let row =  productRows[index].split(",");
+      if(row[1]==newItemName && row[2]==newItemFirm && row[3]==newItemSize){
+        newItemPrice = row[4];
+      }
+    }
+    let newItemBill = newItemPrice*newItemQuantity;
+
+    // Writing current order to orders database
+    let writeOrders = fsPromise.appendFile("./pages/orders.txt",
+    ("\n"+currentOrderId+","+newItemName+","+newItemFirm+","+newItemSize+","
+    +newItemPrice+","+newItemQuantity+","+newItemBill+","+Date.now.toString+","+userEmail+","+userPhone+","+userAddress),
+    {encoding:'UTF-8'})
+  res.redirect("/orders");
 });
 
 app.post("/newUser",isLoggedIn, async (req, res) => {
@@ -147,15 +186,15 @@ app.get("/admin",isLoggedIn, async (req, res) => {
 app.get("/products/:firm",isLoggedIn, async(req, res) => {
   let products = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
     let productRows = products.split("\n");
-    let eligibleProducts = [];
+    let eligibleProducts = "\n";
     for(let index in productRows){
       let row = productRows[index].split(",");
       //console.log(row);
         if(row[2]==req.params.firm){
-          eligibleProducts[eligibleProducts.length] = productRows[index];
+          eligibleProducts+= productRows[index]+"\n";
         }
     }
-  res.render("products", { login: login,loginType:loginType, products:eligibleProducts });
+  res.render("products",{login: login,loginType:loginType,products:eligibleProducts});
 });
 
 app.post("/editProduct",isLoggedIn, async (req, res) => {
@@ -183,6 +222,7 @@ app.post("/editProduct",isLoggedIn, async (req, res) => {
     }
     let newProducts = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
   res.render("products", { login: login,loginType:loginType,products:newProducts });
+  
   
 });
 

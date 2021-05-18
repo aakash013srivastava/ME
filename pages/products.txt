@@ -3,4 +3,6 @@ id,itemname,firm,size,price,quantity
 2,LSBELT,ne,10,1000,20
 3,sling,ne,12,100,100
 4,sling,ribw,12,12,10000
-5,hat,ribw,1,100,2132
+5,hat,ribw,1,100,2121
+6,sling,Select Firm,12,12,123
+7,bar,ne,10,10,10
