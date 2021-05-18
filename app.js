@@ -104,16 +104,17 @@ app.get("/orders",isLoggedIn, async (req, res) => {
           eligibleOrders[eligibleOrders.length] = OrderRows[index];
         }
     }
-    //console.log(eligibleOrders);
-
+    // Fetch product details to populate new order form fields
+    let products = await fsPromise.readFile('./pages/products.txt',{encoding:'UTF-8'});
     res.render("orders", { login: login,loginType:loginType,
-                              userDetails:userDetails, orders: eligibleOrders });
+          userDetails:userDetails, orders: eligibleOrders,products:products });
 });
 
 app.post("/newOrder",isLoggedIn,async(req,res)=>{
   let orders = await fsPromise.readFile('./pages/orders.txt',{encoding:'UTF-8'});
-  let newItemName = req.body.selectItemName;
-  let newItemFirm = req.body.newItemfirm;
+  let newItemName = (req.body.selectItemName).split("-")[0];
+  let newItemFirm = (req.body.selectItemName).split("-")[1];
+  
   let newItemSize = req.body.selectItemSize;
   let newItemQuantity = req.body.newItemQuantity;
   // Fetching last order id
@@ -141,8 +142,10 @@ app.post("/newOrder",isLoggedIn,async(req,res)=>{
     let newItemPrice = null;
     for(let index in productRows){
       let row =  productRows[index].split(",");
+      //console.log(row);
       if(row[1]==newItemName && row[2]==newItemFirm && row[3]==newItemSize){
         newItemPrice = row[4];
+        //console.log(newItemPrice);
       }
     }
     let newItemBill = newItemPrice*newItemQuantity;
