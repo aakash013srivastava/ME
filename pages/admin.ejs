@@ -17,13 +17,13 @@
     </label>
 </div>
 -->
-<form action="/editProduct" method="POST" name="editProduct" id="editProduct">
+<form action="/editProduct" method="POST" name="editProduct" id="editProduct" >
   <div class="form-group">
       <label for="itemname">Itemname</label>
       <input type="text" name="itemname"  class="form-control" id="itemname" required/>
   </div>
 
-  <div class="form-group"></div>
+  <div class="form-group">
     <select class="form-select" aria-label="Select Firm" name="firm" required>
       <option selected value="">Select Firm</option>
       <option value="ne">NE</option>
@@ -45,6 +45,17 @@
     <label for="quantity">Quantity</label>
     <input type="text" name="quantity"  class="form-control" id="quantity" required/>
   </div>
+
+  <!-- <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+    </div>
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="inputGroupFile01"
+        aria-describedby="inputGroupFileAddon01" required>
+      <label class="custom-file-label" for="inputGroupFile01">Choose Product Image</label>
+    </div>
+  </div> -->
 
   <button type="submit" class="btn btn-primary mb-2">Submit</button>
 </form>

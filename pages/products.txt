@@ -5,3 +5,4 @@ id,itemname,firm,size,price,quantity
 4,sling,ribw,12,12,10000
 5,hat,ribw,1,100,2121
 7,bar,ne,10,10,10
+7,shoulder,ribw,15,15,100

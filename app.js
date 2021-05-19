@@ -8,7 +8,9 @@ const cookieSession = require("cookie-session");
 //const multer = require('multer');
 const fs = require("fs");
 const fsPromise = require("fs").promises;
-const { setUncaughtExceptionCaptureCallback } = require("process");
+//const { setUncaughtExceptionCaptureCallback } = require("process");
+
+
 
 app.set("views", "./pages");
 app.set("view engine", "ejs");

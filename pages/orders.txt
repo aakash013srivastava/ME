@@ -3,3 +3,4 @@ id,itemname,firm,size,price,quantity,bill,date,email,phone,address
 2,Sling,NE,10,1000,100,100000,11-11-11,aakash013srivastava@gmail.com,12345,abcd
 3,sling,ribw,12,12,1,12,18/05/2021,aakashsrivastava013@gmail.com,9191919191,oihiuh
 4,bar,ne,10,10,100,1000,19/05/2021,aakash013srivastava@gmail.com,12345,abcd
+5,shoulder,ribw,15,15,15,225,19/05/2021,aakash013srivastava@gmail.com,12345,abcd
