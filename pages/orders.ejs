@@ -65,7 +65,7 @@
     Create Order
 </button>
     
-    <form action="/newOrder" method="POST" id="newOrderForm">
+    <form action="/newOrder" method="POST" id="newOrderForm" style="display:none">
     
         <div class="form-group">
             <!--Populate from DB Item names-->
@@ -75,7 +75,7 @@
                 <%let productRows = products.split("\n").slice(1);%>
                 <%for(index in productRows){%>
                     <%let row= productRows[index].split(",");%>
-                    <option value="<%=row[1]+'-'+row[2]%>"><%=row[1]+'-'+row[2]%></option>
+                    <option value="<%=row[1]+'-'+row[2]+'-Size:'+row[3]%>"><%=row[1]+'-'+row[2]+'-Size:'+row[3]%></option>
                 <%}%>
             </select>
         </div>
@@ -87,10 +87,9 @@
             <option value="ml">ML</option>
             <option value="ribw">RIBW</option>
           </select> 
-        </div>-->
-
+        </div>
         <div class="form-group">
-            <!--Populate from DB Item sizes-->
+            
             <label for="selectItemSize">Select Item Size</label>
             <select class="form-control" id="selectItemSize" name="selectItemSize" required>
                 <option selected value="">Select Size</option>
@@ -100,7 +99,7 @@
                     <option value="<%=row[3]%>"><%=row[3]%></option>
                     <%}%>
             </select>
-        </div>
+        </div>-->
 
         <div class="form-group">
             <label for="quantity">Quantity</label>
@@ -134,7 +133,7 @@
             document.getElementById("createOrder").innerHTML = "Hide Order";
         }else{
             newForm.style.display="none";
-            document.getElementById("createOrder").innerHTML = "New Order";
+            document.getElementById("createOrder").innerHTML = "Create Order";
         }
     }
 </script>

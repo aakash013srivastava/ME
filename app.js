@@ -115,7 +115,7 @@ app.post("/newOrder",isLoggedIn,async(req,res)=>{
   let newItemName = (req.body.selectItemName).split("-")[0];
   let newItemFirm = (req.body.selectItemName).split("-")[1];
   
-  let newItemSize = req.body.selectItemSize;
+  let newItemSize = ((req.body.selectItemName).split("-")[2]).slice(5);
   let newItemQuantity = req.body.newItemQuantity;
   // Fetching last order id
   let orderRows = orders.split("\n");
